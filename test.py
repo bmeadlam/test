@@ -1,20 +1,34 @@
-class Solution:
-    # @param A : list of list of integers
-    # @return the same list modified
-    def setZeroes(self, A):
-        if len(A) == 0:
-            return
-        c_z = {}
-        r_z = {}
-        for i, row in enumerate(A):
-            for j, el in enumerate(row):
-                if el == 0:
-                    r_z[i] = True
-                    c_z[j] = True
-        for i in r_z.keys():
-            for k in range(len(A[0])):
-                A[i][k] = 0
-        for j in c_z.keys():
-            for k in range(len(A)):
-                A[k][j] = 0
-        return A
+def pal(A):
+    if len(A) == 1:
+        return [[A]]
+    # print(A[-1])
+    # print(A[:-1])
+    return merge(A[-1], pal(A[:-1]))
+
+
+def merge(ch, s):
+    out = []
+    for pal_list in s:
+        for i in range(len(pal_list)):
+            if is_pal(sum_list(pal_list[-i:]) + ch):
+                out.append(pal_list[:-i] + [sum_list(pal_list[-i:]) + ch])
+        out.append(pal_list + [ch])
+    return out
+
+
+def is_pal(s):
+    for i in range(int(len(s)/2)):
+        if s[i] != s[-1-i]:
+            return False
+    return True
+
+
+def sum_list(l):
+    out = ''
+    for x in l:
+        out = out + x
+    return out
+
+
+# print(pal('efe'))
+print(pal('efe'))
